@@ -1,0 +1,9 @@
+
+# aquí se les asigna valores a las variables para la configuración de MySQL
+
+mysql_name= vitrodb
+
+mysql_user= vitrodb
+
+mysql_password= vitrodb
+

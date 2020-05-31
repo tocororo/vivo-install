@@ -1,0 +1,37 @@
+# Aqui estan las lineas de los sources.list de todas las versiones de Ubuntu que estan
+# en nuestro servidor de repositorios, para que las mismas funcionen descomente (quite
+# el simbolo "#" que esta delante de cada linea que empieza por deb) las que son de la
+# version que usa y elimine el resto.
+
+#==============================#
+# Ubuntu LTS 14.04 Trusty Tahr #
+#==============================#
+
+#deb http://download.jovenclub.cu/repos/ubuntu/trusty trusty main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/trusty trusty-security main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/trusty trusty-updates main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/trusty trusty-proposed main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/trusty trusty-backports main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/partners/ trusty partner
+
+#===============================#
+# Ubuntu LTS 16.04 Xenial Xerus #
+#===============================#
+
+#deb http://download.jovenclub.cu/repos/ubuntu/xenial xenial main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/xenial xenial-security main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/xenial xenial-updates main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/xenial xenial-proposed main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/xenial xenial-backports main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/partners/ xenial partner
+
+#================================#
+# Ubuntu LTS 18.04 Bionic Beaver #
+#================================#
+
+deb http://download.jovenclub.cu/repos/ubuntu/bionic bionic main universe multiverse restricted
+deb http://download.jovenclub.cu/repos/ubuntu/bionic bionic-security main universe multiverse restricted
+deb http://download.jovenclub.cu/repos/ubuntu/bionic bionic-updates main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/bionic bionic-proposed main universe multiverse restricted
+deb http://download.jovenclub.cu/repos/ubuntu/bionic bionic-backports main universe multiverse restricted
+#deb http://download.jovenclub.cu/repos/ubuntu/partners/ bionic partner

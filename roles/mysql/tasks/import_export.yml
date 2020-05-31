@@ -1,0 +1,26 @@
+
+
+# exporta las bases de datos hacia una carpeta especificada en el host,
+# se debe especificar  dir/nombre_fichero.sql
+- name: Ensure MySQL databases are dump.
+  mysql_db:
+    name: "{{ item.name }}"
+    collation: "{{ item.collation | default('utf8_general_ci') }}"
+    encoding: "{{ item.encoding | default('utf8') }}"
+    state: dump
+    target: "{{ item.target_path_file }}"
+  with_items: "{{ mysql_databases_dump }}"
+  when: mysql_databases_dump is defined
+
+
+# importa las bases de datos desde una carpeta especificada en el host,
+# se debe especificar  dir/nombre_fichero.sql
+- name: Ensure MySQL databases are import.
+  mysql_db:
+    name: "{{ item.name }}"
+    collation: "{{ item.collation | default('utf8_general_ci') }}"
+    encoding: "{{ item.encoding | default('utf8') }}"
+    state: import
+    target: "{{ item.path_file }}"
+  with_items: "{{ mysql_databases_import }}"
+  when: mysql_databases_import is defined

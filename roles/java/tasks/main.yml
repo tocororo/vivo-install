@@ -1,0 +1,36 @@
+- name: Include version-specific variables for Ubuntu.
+  include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Include version-specific variables for Debian.
+  include_vars: "{{ ansible_distribution|title }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
+  when: ansible_os_family == 'Debian'
+
+- name: Define java_packages.
+  set_fact:
+    java_packages: "{{ __java_packages | list }}"
+  when: java_packages is not defined
+
+# Setup/install tasks.
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+# Environment setup.
+- name: Set JAVA_HOME if configured.
+  template:
+    src: java_home.sh.j2
+    dest: /etc/profile.d/java_home.sh
+    mode: 0644
+  when: java_home is defined and java_home
+
+- name: set java_home in environment
+  lineinfile:
+    path: /etc/environment
+    line: 'export JAVA_HOME={{java_home}}'
+    insertbefore: AOF   
+  when: java_home is defined and java_home
+
+- name: source envirnment
+  shell: source /etc/environment
+  args:
+     executable: /bin/bash

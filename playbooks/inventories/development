@@ -1,0 +1,11 @@
+[mysql]
+10.118.31.198
+
+[vivo]
+10.118.31.198
+
+[solr]
+10.118.31.148
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3

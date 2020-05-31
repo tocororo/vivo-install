@@ -1,0 +1,68 @@
+
+- name: stop tomcat instance
+  service:
+    name: "{{ tomcat_service_name }}"
+    state: stopped
+
+# clonar los repositorio de VIVO y Vitro
+- name: clone/update apps 
+  include_role:
+    name: crai-git
+  vars: 
+    git_app_name: "{{item.name}}"
+    git_app_path_repo: "{{item.path}}"
+  with_items:
+    - {name: "vivo", path: "vivo/"}
+    - {name: "vitro", path: "vivo/"}
+    - {name: "vivo-solr", path: "vivo/"}
+
+# editar el fichero install-settings.xml
+- name: template install-settings.xml
+  template:
+    src: templates/install-settings.xml.j2
+    dest: "{{ vivo_dir }}/installer/install-settings.xml"
+
+
+- name: Execute mvn install
+  shell: "mvn install -s install-settings.xml"
+  args:
+    chdir: "{{ vivo_dir }}/installer/"
+
+
+- name: template runtime.properties
+  template:
+    src: templates/runtime.properties.j2
+    dest: "{{ vivo_dir }}/home/config/runtime.properties"
+
+- name: template applicationSetup.n3
+  template:
+    src: templates/applicationSetup.n3.j2
+    dest: "{{ vivo_dir }}/home/config/applicationSetup.n3"
+
+- name: set permisions to vivo home directory
+  file:
+      path: "{{ vivo_dir }}/home" 
+      group: "{{tomcat_group}}"
+      owner: "{{tomcat_user}}" 
+
+
+- name: update  /etc/security/limits.conf to give more threads than are permitted (apache)
+  lineinfile:
+    path: /etc/security/limits.conf
+    firstmatch: yes
+    regexp: '^apache '
+    insertafter: '^#apache '
+    line: apache hard nproc 400
+
+- name: update  /etc/security/limits.conf to give more threads than are permitted (tomcat)
+  lineinfile:
+    path: /etc/security/limits.conf
+    firstmatch: yes
+    regexp: '^tomcat '
+    insertafter: '^#tomcat '
+    line: tomcat hard nproc 1500
+
+- name: restart tomcat instance
+  service:
+    name: "{{ tomcat_service_name }}"
+    state: restarted

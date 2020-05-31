@@ -1,0 +1,9 @@
+---
+# tasks file for tomcat
+- name: loop over tomcat_instances
+  include: instance.yml
+  with_items: "{{ tomcat_instances }}"
+  loop_control:
+    loop_var: instance
+  when:
+    - tomcat_instances is defined

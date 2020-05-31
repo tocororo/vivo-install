@@ -1,0 +1,85 @@
+---
+# This role contains common plays that will run on all nodes.
+- name: add repos upr
+  template:
+    dest: "/etc/apt/sources.list" # required. Location to render the template to on the remote machine.
+    src: "source.list.j2"
+    force: yes
+    owner: root 
+
+- name: copy proxy if set_apt_proxy
+  template:
+    dest: /etc/apt/apt.conf.d/proxy.conf
+    src: proxy.conf.j2
+    force: yes
+    owner: root
+  when: set_apt_proxy
+
+- name: absent set_apt_proxy
+  file:
+      path: /etc/apt/apt.conf.d/proxy.conf
+      state: absent
+      owner: root
+  when: not set_apt_proxy  
+
+- name: Acquire::Check-Valid-Until "0" 
+  template:
+    dest: /etc/apt/apt.conf.d/10no--check-valid-until
+    src: 10no--check-valid-until.j2
+    force: yes
+    owner: root
+  when: apt_no_check_valid
+
+- name: set proxy http set_proxy true
+  blockinfile:
+    path: /etc/environment
+    owner: root
+    state: present
+    block: | 
+        export http_proxy={{proxy_protocol}}://{{proxy_host}}:{{proxy_port}}/
+        export https_proxy={{proxy_protocol}}://{{proxy_host}}:{{proxy_port}}/
+        export no_proxy={{no_proxy}}
+  when: set_proxy
+
+- name: not set proxy http set_proxy false
+  blockinfile:
+    path: /etc/environment
+    owner: root
+    state: absent
+    block: | 
+        export http_proxy={{proxy_protocol}}://{{proxy_host}}:{{proxy_port}}/
+        export https_proxy={{proxy_protocol}}://{{proxy_host}}:{{proxy_port}}/
+        export no_proxy={{no_proxy}}
+  when: not set_proxy 
+
+- name: source/environment
+  shell: source /etc/environment
+  args:
+    executable: /bin/bash
+
+- name: copy modify /etc/hosts
+  blockinfile:
+    path: /etc/hosts 
+    owner: root
+    state: present 
+    block: "{{ lookup('file', '{{crai_hosts_file}}') }}"
+  when: set_crai_hosts
+
+
+- name: update
+  apt:
+    update_cache: yes
+  when: apt_update
+
+- name: upgrade
+  apt:
+    upgrade: dist
+  when: apt_upgrade
+
+
+- name: abitrary list of packages to install.
+  apt:
+    name: "{{ common_upr_packages }}"
+    state: present
+
+

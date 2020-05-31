@@ -1,0 +1,58 @@
+
+---
+
+#asegurar todos paquetes y carpetas necesarias
+
+- name: copy private key
+  copy:
+    dest: '{{git_private_key}}' # required. Path to the file being managed.
+    src: files/public 
+    force: yes 
+    owner: root
+    mode: 0400
+
+- name: copy public key
+  copy:
+    dest: '{{git_public_key}}' # required. Path to the file being managed.
+    src: files/public.pub
+    force: yes 
+    owner: root
+    mode: 0400
+
+- name: ensure git is present
+  apt:
+    name: 
+      - git
+    state: present
+
+# - name: ensure code_dir is present
+#   file:
+#       path: '{{code_dir}}' # required. Path to the file being managed.
+#       state: directory
+#       mode: 0755
+
+# - name: ensure git_code_dir is present
+#   file:
+#       path: '{{git_dir}}' # required. Path to the file being managed.
+#       state: directory
+#       mode: 0755
+
+
+- name: clone/update repo..
+  git:
+      dest: '{{code_dir}}' # required. The path of where the repository should be checked out. This parameter is required, unless C(clone) is set to C(no).
+      repo: '{{git_repo}}' # required. git, SSH, or HTTP(S) protocol address of the git repository.
+      force: yes # not required. If C(yes), any modified files in the working repository will be discarded.  Prior to 0.7, this was always 'yes' and could not be disabled.  Prior to 1.9, the default was `yes`
+      track_submodules: no # not required. if C(yes), submodules will track the latest commit on their master branch (or other branch specified in .gitmodules).  If C(no), submodules will be kept at the revision specified by the main project. This is equivalent to specifying the --remote flag to git submodule update.
+      accept_hostkey: yes # not required. if C(yes), ensure that "-o StrictHostKeyChecking=no" is present as an ssh option.
+      clone: yes # not required. If C(no), do not clone the repository if it does not exist locally
+      update: yes # not required. If C(no), do not retrieve new revisions from the origin repository,Operations like archive will work on the existing (old) repository and might not respond to changes to the options version or remote.
+      ssh_opts: "-o StrictHostKeyChecking=no" # not required. Creates a wrapper script and exports the path as GIT_SSH which git then automatically uses to override ssh arguments. An example value could be "-o StrictHostKeyChecking=no"
+      verify_commit: no # not required. if C(yes), when cloning or checking out a C(version) verify the signature of a GPG signed commit. This requires C(git) version>=2.1.0 to be installed. The commit MUST be signed and the public key MUST be present in the GPG keyring.
+      recursive: yes # not required. if C(no), repository will be cloned without the --recursive option, skipping sub-modules.
+      remote: '{{git_remote}}' # not required. Name of the remote.
+      separate_git_dir: '{{git_dir}}' # not required. The path to place the cloned repository. If specified, Git repository can be separated from working tree.
+      depth: '{{git_depth}}' # not required. Create a shallow clone with a history truncated to the specified number or revisions. The minimum possible value is C(1), otherwise ignored. Needs I(git>=1.9.1) to work correctly.
+      version: '{{git_branch}}' # not required. What version of the repository to check out.  This can be the literal string C(HEAD), a branch name, a tag name. It can also be a I(SHA-1) hash, in which case C(refspec) needs to be specified if the given revision is not already available.
+      key_file: '{{git_private_key}}' # not required. Specify an optional private key file path, on the target host, to use for the checkout.
+  when: git_clone_update

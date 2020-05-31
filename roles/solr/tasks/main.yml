@@ -1,0 +1,58 @@
+---
+- import_tasks: user.yml
+  when: solr_create_user
+
+- name: Set solr_filename
+  set_fact:
+    solr_filename: "solr-{{solr_version}}"
+
+
+- name: Check if Solr has been installed already.
+  stat:
+    path: "{{ solr_install_path }}"
+  register: solr_install_path_status
+
+- name: Download Solr.
+  # copy:
+  #   src: "{{solr_dist_source_path}}/{{ solr_filename }}.tgz"
+  #   dest: "{{ solr_workspace }}/{{ solr_filename }}.tgz"
+  #   force: yes 
+  #   owner: root 
+  # when: solr_install_path_status.stat.isdir is not defined
+  # register: solr_download_status
+  get_url:
+    url: "{{solr_dist_source_path }}/{{ solr_filename }}.tgz"
+    dest: "{{ solr_workspace }}/{{ solr_filename }}.tgz"
+    force: true
+  when: solr_install_path_status.stat.isdir is not defined
+  register: solr_download_status
+
+- name: Expand Solr.
+  unarchive:
+    src: "{{ solr_workspace }}/{{ solr_filename }}.tgz"
+    dest: "{{ solr_workspace }}"
+    copy: false
+  when: solr_download_status.changed
+  tags: ['skip_ansible_lint']
+
+# Install Solr 5+.
+- include_tasks: install.yml
+  when: "solr_version.split('.')[0] >= '5'"
+
+- name: Ensure solr is started and enabled on boot if configured.
+  service:
+    name: "{{ solr_service_name }}"
+    state: "{{ solr_service_state }}"
+    enabled: true
+  when: solr_service_manage
+
+# Configure solr.
+- include_tasks: configure.yml
+  when: "solr_version.split('.')[0] >= '5'"
+
+# Create cores, if any are configured.
+- include_tasks: cores.yml
+  when: "solr_cores and solr_version.split('.')[0] >= '5'"
+
+- include_tasks: trim-fat.yml
+

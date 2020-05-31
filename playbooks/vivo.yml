@@ -1,0 +1,116 @@
+- name: apply common configuration to all nodes
+  hosts: vivo, solr, mysql
+  remote_user: root
+  roles:
+    - role: crai-common
+      vars:
+        apt_protocol: "{{ proxy_port }}"
+        apt_repo: "{{ ubuntu_repo }}"
+        apt_so: ubuntu
+        apt_dist: bionic
+        apt_upgrade: false
+        apt_update: true
+        proxy_protocol: "{{ proxy_protocol }}"
+        proxy_host: "{{ proxy_host }}"
+        proxy_port: "{{ proxy_port }}"
+        no_proxy: "{{ proxy_pass }}"
+        set_apt_proxy: true
+        set_proxy: true
+
+
+- name: mysql
+  hosts: mysql
+  remote_user: root
+  roles:
+    - role: mysql 
+      become: yes
+      vars:
+        mysql_databases:
+          - {name: "{{ mysql_name }}", collation: utf8mb4_unicode_ci, encoding: utf8mb4}
+        mysql_users:
+          - {name: "{{ mysql_user }}", host: '%', password: "{{ mysql_password }}", priv: "{{ mysql_name }}.*:ALL" }
+
+- name: apply solr configuration
+  hosts: solr
+  remote_user: root
+  roles:
+    - role: java
+      vars:
+        java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
+    - role: solr
+      vars:
+        solr_dist_source_path: https://downloads.apache.org/lucene/solr/8.4.1
+        solr_version: 8.4.1
+    - role: crai-git
+      vars: 
+        git_app_name: "vivo-solr"
+        git_app_path_repo: "vivo/"
+        
+  tasks:
+  - name: restart solr
+    service:
+      name: "solr"
+      state: stopped
+      enabled: true
+  - name: copy to /var/solr/data/
+    synchronize:
+      src: /opt/vivo-solr/vivocore/
+      dest: /var/solr/data/vivocore/
+    delegate_to: "{{ inventory_hostname }}"
+  - name: permisions
+    file: 
+      dest: /var/solr/data/vivocore 
+      owner: solr 
+      group: solr 
+      mode: u=rwX,g=rX,o=rX 
+      recurse: yes
+
+  - name: restart solr
+    service:
+      name: "solr"
+      state: started
+      enabled: true
+  environment:
+    http_proxy: "{{ proxy_host }}"
+    https_proxy: "{{ proxy_host }}"
+
+
+- name: apply vivo configuration
+  hosts: vivo
+  remote_user: root
+  roles:
+    - role: java
+      vars:
+        java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
+    
+    - role: maven
+
+    - role: tomcat
+      vars:
+        tomcat_instances:
+          - name: "tomcat-9"
+            version: 9
+            user: tomcat
+            group: tomcat
+            shutdown_port: 8019
+            non_ssl_connector_port: 8080
+            ssl_connector_port: 8443
+            ajp_port: 8013
+            xms: 512M
+            xmx: 1024M
+            catalina_max_perm_size: 128m
+
+    - role: vivo
+      vars:
+        tomcat_dir: /opt/tomcat-9
+        vivo_dir: /opt/vivo
+        vitro_defaultNamespace: "{{ vitro_defaultNamespace }}"
+        vitro_database_url : "{{ vitro_database_url }}"
+        vitro_solr_url : http://10.118.31.148:8983/solr/vivocore
+        selfEditing_idMatchingProperty : http://10.118.31.198:8080/vivo/ns#networkId
+        tomcat_group: tomcat
+        tomcat_user: tomcat
+        rootUser_emailAddress: "{{ admin_email }}"
+  environment:
+    http_proxy: "{{ proxy_host }}"
+    https_proxy: "{{ proxy_host }}"

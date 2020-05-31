@@ -1,0 +1,23 @@
+
+git_app_name: ''
+
+# debe usarse con un el slash (/) final (eg. pkp/ construye el repo pkp/ojs.git)
+git_app_path_repo: ''
+
+git_server: 'crai-code.upr.edu.cu'
+
+git_repo: 'git@{{git_server}}:{{git_app_path_repo}}{{git_app_name}}.git'
+
+git_branch: master
+
+git_remote: origin
+
+git_depth: 1
+code_dir: /opt/{{git_app_name}}
+
+git_dir: /opt/{{git_app_name}}.git
+
+git_private_key: /opt/id_rsa
+git_public_key: /opt/id_rsa.pub
+
+git_clone_update: true

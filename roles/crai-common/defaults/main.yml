@@ -1,0 +1,23 @@
+apt_protocol: http
+apt_repo: upr.edu.cu
+apt_so: ubuntu
+apt_dist: bionic
+
+set_apt_proxy: false
+set_proxy: true
+proxy_protocol: http
+proxy_host: proxy-go.upr.edu.cu
+proxy_port: 8080
+proxy_user: false
+proxy_pass: false
+no_proxy: localhost,127.0.0.1,*.upr.edu.cu,10.2.0.0/15
+
+apt_update: true
+apt_upgrade: true
+apt_no_check_valid: false
+
+set_crai_hosts: false
+crai_hosts_file: none
+
+# an abitrary list of packages to install.
+common_upr_packages: []

@@ -1,0 +1,76 @@
+
+app_name: vivo
+
+destination: /opt
+
+# vivo_repo: http://crai-code.upr.edu.cu/
+
+# vitro_repo: http://crai-code.upr.edu.cu/
+
+tomcat_dir: /opt/tomcat
+
+tomcat_service_name: tomcat-9
+
+vivo_dir: /opt/vivo
+
+
+  # This namespace will be used when generating URIs for objects created in the
+  # editor. In order to serve linked data, the default namespace must be composed
+  # as follows (optional elements in parentheses):
+  #
+  # scheme + server_name (+ port) (+ servlet_context) + "/individual/"
+vitro_defaultNamespace: http://10.118.31.247:8080/vivo/individual/
+
+rootUser_emailAddress: edel.abreu@upr.edu.cu
+
+  #
+  # The basic parameters for a database connection. Change the end of the
+  # URL to reflect your database name (if it is not "vitrodb"). Change the username
+  # and password to match the authorized database user you created.
+  #
+vitro_database_url : jdbc:mysql://10.118.31.144/vitrodb
+vitro_database_username : vitrodb
+vitro_database_password : vitrodb
+  #
+  # Parameters to change in order to use VIVO with a database other than
+  # MySQL.
+  #
+vitro_database_dbtype : MySQL
+vitro_database_driver : com.mysql.jdbc.Driver
+vitro_database_validationQuery : SELECT 1
+
+email_smtpHost : correo.upr.edu.cu
+email_replyTo : edel.abreu@upr.edu.cu
+
+  # URL of Solr context used in local VIVO search. This will usually consist of:
+  #     scheme + server_name + port + vivo_webapp_name + "solr"
+vitro_solr_url : http://10.118.31.225:8080/vivosolr
+
+  # -----------------------------------------------------------------------------
+  # LINKING USER ACCOUNTS TO PROFILE PAGES
+  # -----------------------------------------------------------------------------
+selfEditing_idMatchingProperty : http://10.118.31.247:8080/vivo/ns#networkId
+
+  #
+  # Show only the most appropriate data values based on the Accept-Language
+  # header supplied by the browser.  Default is false if not set.
+  #
+language_filter : true
+
+  #
+  # A list of supported languages or Locales that the user may choose to
+  # use instead of the one specified by the browser. Selection images must
+  # be available in the i18n/images directory of the theme. This affects
+  # RDF data retrieved from the model, if RDFService.languageFilter is true.
+  # This also affects the text of pages that have been modified to support
+  # multiple languages.
+  #
+  # This should not be used with languages.forceLocale, which will override it.
+  #
+# languages.selectableLocales = en_US, es_GO
+
+  # Tell VIVO to generate HTTP headers on its responses to facilitate caching the
+  # profile pages that it creates.
+http_createCacheHeaders : true
+
+visualization_temporal : enabled

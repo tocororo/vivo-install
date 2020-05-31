@@ -1,0 +1,4 @@
+deb http://repos.upr.edu.cu/ubuntu/ xenial main restricted multiverse universe
+deb http://repos.upr.edu.cu/ubuntu/ xenial-updates main restricted multiverse universe
+deb http://repos.upr.edu.cu/ubuntu/ xenial-security main restricted multiverse universe
+deb http://repos.upr.edu.cu/ubuntu/ xenial-backports main restricted multiverse universe

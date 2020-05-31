@@ -1,0 +1,6 @@
+{% if apache_haproxy_ip is defined %}
+RemoteIPHeader X-Forwarded-For
+RemoteIPTrustedProxy {{apache_haproxy_ip}}
+{% endif %}
+
+

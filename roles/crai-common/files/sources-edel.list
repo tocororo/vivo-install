@@ -1,0 +1,4 @@
+deb ftp://10.2.83.114/ubuntu/ bionic main restricted multiverse universe
+deb ftp://10.2.83.114/ubuntu/ bionic-updates main restricted multiverse universe
+deb ftp://10.2.83.114/ubuntu/ bionic-security main restricted multiverse universe
+deb ftp://10.2.83.114/ubuntu/ bionic-backports main restricted multiverse universe

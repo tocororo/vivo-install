@@ -1,0 +1,60 @@
+# - name: source envirnment
+#   shell: source /etc/environment
+#   args:
+#      executable: /bin/bash
+- name: download maven
+  get_url:
+      dest: "{{maven_download_dir}}"
+      url: "{{maven_download_zip}}"
+      
+- name: install unarchive module dependencies (dnf, zypper)
+  become: yes
+  package:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - tar
+    - unzip
+    - gzip
+
+- name: create directory maven
+  file:
+    path: "{{ maven_install_dir }}"
+    state: directory
+
+- name: var
+  set_fact:
+      split_url: "{{ maven_download_zip.split('/')}}"
+
+- name: var
+  set_fact:
+      split_count: "{{ split_url | length - 1 }}"
+
+- name: install Maven
+  become: yes
+  unarchive:
+    dest: '{{ maven_install_dir }}'
+    src: "{{ maven_download_dir }}/{{ split_url[ split_count | int ]  }}"
+    remote_src: yes
+
+- name: create symbolic links
+  include_tasks: create-symbolic-links.yml
+  when: maven_is_default_installation
+
+# - name: set maven_install_dir in environment
+#   lineinfile:
+#     path: /etc/environment
+#     line: 'export PATH={{ maven_install_dir }}/{{ split_url[ split_count | int ]  }}/bin:$PATH'
+#     insertbefore: AOF
+#   when: maven_install_dir is defined and maven_install_dir
+
+# - name: source envirnment
+#   shell: source /etc/environment
+#   args:
+#      executable: /bin/bash
+
+
+- name: maven settings template
+  template:
+      dest: "{{ maven_install_dir }}/{{ split_url[ split_count | int ].split('-bin')[0]  }}/conf/settings.xml"
+      src: settings.xml.j2

@@ -1,0 +1,16 @@
+roles: para almacenar todos los roles que usemos, en cualquier contexto... 
+
+
+playbooks: serian los "proyectos". 
+    Ej: dspace, es una combinacion de varias cosas y se usa en 2 servidores de la upr (rc y earchivos). 
+    dspace puede usar varios roles (tomcat, postgre, solr, etc...)
+    Ej: abcd
+    Ej: webcrai
+    Ej: blogcrai
+    Ej: OJS
+    Ej: computadoras de las salas (metal)   
+    
+    cada playbooks tiene un ansible.cfg donde se especifica el inventory que se va a ejecutar, pueden ser: 
+        inventories/development hosts para el desarrollo y testeo
+        inventories/production host en produccion
+
