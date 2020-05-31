@@ -1,4 +1,0 @@
-deb http://repos.upr.edu.cu/ubuntu/ bionic main restricted multiverse universe
-deb http://repos.upr.edu.cu/ubuntu/ bionic-updates main restricted multiverse universe
-deb http://repos.upr.edu.cu/ubuntu/ bionic-security main restricted multiverse universe
-deb http://repos.upr.edu.cu/ubuntu/ bionic-backports main restricted multiverse universe

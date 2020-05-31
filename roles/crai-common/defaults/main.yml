@@ -1,5 +1,5 @@
 apt_protocol: http
-apt_repo: upr.edu.cu
+apt_repo: repos.upr.edu.cu
 apt_so: ubuntu
 apt_dist: bionic
 
@@ -10,7 +10,7 @@ proxy_host: proxy-go.upr.edu.cu
 proxy_port: 8080
 proxy_user: false
 proxy_pass: false
-no_proxy: localhost,127.0.0.1,*.upr.edu.cu,10.2.0.0/15
+no_proxy: localhost,127.0.0.1
 
 apt_update: true
 apt_upgrade: true
