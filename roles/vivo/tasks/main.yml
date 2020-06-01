@@ -5,6 +5,8 @@
     state: stopped
 
 # clonar los repositorio de VIVO y Vitro
+# ------------------------------------------------------------
+# TODO: actualizar las variables segun el repo
 - name: clone/update apps 
   include_role:
     name: crai-git

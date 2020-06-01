@@ -3,10 +3,6 @@ app_name: vivo
 
 destination: /opt
 
-# vivo_repo: http://crai-code.upr.edu.cu/
-
-# vitro_repo: http://crai-code.upr.edu.cu/
-
 tomcat_dir: /opt/tomcat
 
 tomcat_service_name: tomcat-9

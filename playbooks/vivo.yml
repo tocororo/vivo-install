@@ -41,6 +41,7 @@
       vars:
         solr_dist_source_path: https://downloads.apache.org/lucene/solr/8.4.1
         solr_version: 8.4.1
+    # TODO: actualizar las variables segun el repo
     - role: crai-git
       vars: 
         git_app_name: "vivo-solr"
@@ -84,6 +85,10 @@
         java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
     
     - role: maven
+      vars:
+        maven_proxy_host: "{{ proxy_host }}"
+        maven_proxy_port: "{{ proxy_port }}"
+        maven_proxy_active: true
 
     - role: tomcat
       vars:
