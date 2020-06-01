@@ -1,42 +1,10 @@
 
 ---
-
-#asegurar todos paquetes y carpetas necesarias
-
-- name: copy private key
-  copy:
-    dest: '{{git_private_key}}' # required. Path to the file being managed.
-    src: files/public 
-    force: yes 
-    owner: root
-    mode: 0400
-
-- name: copy public key
-  copy:
-    dest: '{{git_public_key}}' # required. Path to the file being managed.
-    src: files/public.pub
-    force: yes 
-    owner: root
-    mode: 0400
-
 - name: ensure git is present
   apt:
     name: 
       - git
     state: present
-
-# - name: ensure code_dir is present
-#   file:
-#       path: '{{code_dir}}' # required. Path to the file being managed.
-#       state: directory
-#       mode: 0755
-
-# - name: ensure git_code_dir is present
-#   file:
-#       path: '{{git_dir}}' # required. Path to the file being managed.
-#       state: directory
-#       mode: 0755
-
 
 - name: clone/update repo..
   git:

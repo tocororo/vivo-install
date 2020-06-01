@@ -42,11 +42,11 @@
         solr_dist_source_path: https://downloads.apache.org/lucene/solr/8.4.1
         solr_version: 8.4.1
     # TODO: actualizar las variables segun el repo
-    - role: crai-git
+    - role: git
       vars: 
-        git_app_name: "vivo-solr"
-        git_app_path_repo: "vivo/"
-        
+        git_repo: http://gitlab.upr.edu.cu/vivo/vivo-solr.git
+
+
   tasks:
   - name: restart solr
     service:
@@ -111,8 +111,8 @@
         vivo_dir: /opt/vivo
         vitro_defaultNamespace: "{{ vitro_defaultNamespace }}"
         vitro_database_url : "{{ vitro_database_url }}"
-        vitro_solr_url : http://10.118.31.148:8983/solr/vivocore
-        selfEditing_idMatchingProperty : http://10.118.31.198:8080/vivo/ns#networkId
+        vitro_solr_url : "{{ vitro_solr_url }}"
+        selfEditing_idMatchingProperty : "{{ selfEditing_idMatchingProperty }}"
         tomcat_group: tomcat
         tomcat_user: tomcat
         rootUser_emailAddress: "{{ admin_email }}"

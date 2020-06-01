@@ -5,18 +5,15 @@
     state: stopped
 
 # clonar los repositorio de VIVO y Vitro
-# ------------------------------------------------------------
-# TODO: actualizar las variables segun el repo
 - name: clone/update apps 
   include_role:
     name: crai-git
   vars: 
-    git_app_name: "{{item.name}}"
-    git_app_path_repo: "{{item.path}}"
+    git_repo: "{{ item }}"
   with_items:
-    - {name: "vivo", path: "vivo/"}
-    - {name: "vitro", path: "vivo/"}
-    - {name: "vivo-solr", path: "vivo/"}
+    - http://gitlab.upr.edu.cu/vivo/vivo.git
+    - http://gitlab.upr.edu.cu/vivo/vitro.git
+    - http://gitlab.upr.edu.cu/vivo/vivo-solr.git
 
 # editar el fichero install-settings.xml
 - name: template install-settings.xml

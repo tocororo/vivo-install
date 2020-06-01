@@ -47,11 +47,18 @@ Java 8 OpenJDK as its minimum version, Maven to manage installation packages, My
 
         $ ansible-playbook vivo.yml
 
+
+## To Future
+- Configure VIVO to deploy behind an Apache web server
+- Configure VIVO to allow integration with ORCID
+
+
 ## License
 
 MIT / BSD
 
+
 ## Authors
 
-- [Centro  de Recursos para el Aprendizaje y la Investigación de la Universidad de Piniar del Río Hermanos Saiz Montes de Oca](https://crai.upr.edu.cu)
+- [Departamento de Sistemas y Tecnologías de la Información perteneciente al Centro  de Recursos para el Aprendizaje y la Investigación (CRAI) de la Universidad de Piniar del Río Hermanos Saiz Montes de Oca](https://crai.upr.edu.cu)
 - [Proyecto Tocororo](https://tocororo.upr.edu.cu)
