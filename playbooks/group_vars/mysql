@@ -1,9 +1,30 @@
 
 # aquí se les asigna valores a las variables para la configuración de MySQL
 
-mysql_name= vitrodb
+# Configuración general
+# ---------------------------------------------------------
 
-mysql_user= vitrodb
+ubuntu_repo: repos.upr.edu.cu
 
-mysql_password= vitrodb
+
+proxy__host: proxy-go.upr.edu.cu
+
+
+proxy__protocol: http
+
+
+proxy__port: 8080
+
+
+proxy__pass: localhost,127.0.0.1
+
+
+
+# Configuración de MySQL
+# ---------------------------------------------------------
+mysql_name: vitrodb
+
+mysql_user: vitrodb
+
+mysql_password: vitrodb
 

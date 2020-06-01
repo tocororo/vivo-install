@@ -1,0 +1,19 @@
+
+# aquí se les asigna valores a las variables para la configuración de Solr
+
+# Configuración general
+# ---------------------------------------------------------
+
+ubuntu_repo: repos.upr.edu.cu
+
+
+proxy__host: proxy-go.upr.edu.cu
+
+
+proxy__protocol: http
+
+
+proxy__port: 8080
+
+
+proxy__pass: localhost,127.0.0.1

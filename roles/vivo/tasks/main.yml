@@ -7,13 +7,14 @@
 # clonar los repositorio de VIVO y Vitro
 - name: clone/update apps 
   include_role:
-    name: crai-git
+    name: git
   vars: 
-    git_repo: "{{ item }}"
+    git_repo: "{{ item.url }}"
+    git_app_name: "{{ item.name }}"
   with_items:
-    - http://gitlab.upr.edu.cu/vivo/vivo.git
-    - http://gitlab.upr.edu.cu/vivo/vitro.git
-    - http://gitlab.upr.edu.cu/vivo/vivo-solr.git
+    - { url: "http://gitlab.upr.edu.cu/vivo/vivo.git", name: vivo}
+    - { url: "http://gitlab.upr.edu.cu/vivo/vitro.git", name: vitro}
+    - { url: "http://gitlab.upr.edu.cu/vivo/vivo-solr.git", name: vivo-solr}
 
 # editar el fichero install-settings.xml
 - name: template install-settings.xml

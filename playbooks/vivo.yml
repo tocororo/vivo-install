@@ -4,16 +4,16 @@
   roles:
     - role: crai-common
       vars:
-        apt_protocol: "{{ proxy_port }}"
+        apt_protocol: "{{ proxy__protocol }}"
         apt_repo: "{{ ubuntu_repo }}"
         apt_so: ubuntu
         apt_dist: bionic
         apt_upgrade: false
         apt_update: true
-        proxy_protocol: "{{ proxy_protocol }}"
-        proxy_host: "{{ proxy_host }}"
-        proxy_port: "{{ proxy_port }}"
-        no_proxy: "{{ proxy_pass }}"
+        proxy_protocol: "{{ proxy__protocol }}"
+        proxy_host: "{{ proxy__host }}"
+        proxy_port: "{{ proxy__port }}"
+        no_proxy: "{{ proxy__pass }}"
         set_apt_proxy: true
         set_proxy: true
 
@@ -39,12 +39,13 @@
         java_home: "/usr/lib/jvm/java-11-openjdk-amd64"
     - role: solr
       vars:
-        solr_dist_source_path: https://downloads.apache.org/lucene/solr/8.4.1
-        solr_version: 8.4.1
-    # TODO: actualizar las variables segun el repo
+        solr_dist_source_path: https://downloads.apache.org/lucene/solr/8.5.2
+        solr_version: 8.5.2
+
     - role: git
       vars: 
-        git_repo: http://gitlab.upr.edu.cu/vivo/vivo-solr.git
+        git_repo: "http://gitlab.upr.edu.cu/vivo/vivo-solr.git"
+        git_app_name: vivo-solr
 
 
   tasks:
@@ -72,8 +73,8 @@
       state: started
       enabled: true
   environment:
-    http_proxy: "{{ proxy_host }}"
-    https_proxy: "{{ proxy_host }}"
+    http_proxy: "{{ proxy__protocol }}://{{ proxy__host }}:{{ proxy__port }}"
+    https_proxy: "{{ proxy__protocol }}://{{ proxy__host }}:{{ proxy__port }}"
 
 
 - name: apply vivo configuration
@@ -86,8 +87,8 @@
     
     - role: maven
       vars:
-        maven_proxy_host: "{{ proxy_host }}"
-        maven_proxy_port: "{{ proxy_port }}"
+        maven_proxy_host: "{{ proxy__host }}"
+        maven_proxy_port: "{{ proxy__port }}"
         maven_proxy_active: true
 
     - role: tomcat
@@ -109,13 +110,15 @@
       vars:
         tomcat_dir: /opt/tomcat-9
         vivo_dir: /opt/vivo
-        vitro_defaultNamespace: "{{ vitro_defaultNamespace }}"
-        vitro_database_url : "{{ vitro_database_url }}"
-        vitro_solr_url : "{{ vitro_solr_url }}"
-        selfEditing_idMatchingProperty : "{{ selfEditing_idMatchingProperty }}"
+        vitro_defaultNamespace: "{{ vitro__defaultNamespace }}"
+        vitro_database_url : "{{ vitro__database_url }}"
+        vitro_solr_url : "{{ vitro__solr_url }}"
+        selfEditing_idMatchingProperty : "{{ selfEditing__idMatchingProperty }}"
         tomcat_group: tomcat
         tomcat_user: tomcat
-        rootUser_emailAddress: "{{ admin_email }}"
+        rootUser_emailAddress: "{{ admin__email }}"
+        email_smtpHost : "{{ email__smtpHost }}"
+        email_replyTo : "{{ admin__email }}"
   environment:
-    http_proxy: "{{ proxy_host }}"
-    https_proxy: "{{ proxy_host }}"
+    http_proxy: "{{ proxy__protocol }}://{{ proxy__host }}:{{ proxy__port }}"
+    https_proxy: "{{ proxy__protocol }}://{{ proxy__host }}:{{ proxy__port }}"
