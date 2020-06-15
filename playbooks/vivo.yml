@@ -115,10 +115,14 @@
           - proxy_ajp.load
         # apache_haproxy_ip: "200.14.49.24"
         apache_remove_default_vhost: false
-        apache_create_vhosts: false
-        apache_vhosts:
+        apache_create_vhosts: true
+        apache_vhosts_ssl:
             - servername: "vivo.upr.edu.cu"
               serveralias: "www.vivo.upr.edu.cu"
+              certificate_file: "/etc/ssl/certs/vivo.upr.edu.cu.crt"
+              certificate_key_file: "/etc/ssl/private/vivo.upr.edu.cu.key"
+              error_log: "${APACHE_LOG_DIR}/vivo_error.log"
+              access_log: "${APACHE_LOG_DIR}/vivo_access.log"
               ajp: "localhost:8013"
 
     - role: vivo

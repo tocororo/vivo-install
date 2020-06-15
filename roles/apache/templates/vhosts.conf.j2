@@ -90,6 +90,10 @@ LogFormat "%a %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combine
 {% if vhost.extra_parameters is defined %}
   {{ vhost.extra_parameters }}
 {% endif %}
+
+{% if vhost.ajp is defined %}
+    ProxyPass / ajp://{{ vhost.ajp }}/
+{% endif %}
 </VirtualHost>
 
 {% endif %}

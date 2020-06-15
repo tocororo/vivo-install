@@ -58,6 +58,30 @@
   when: apache_haproxy_ip is defined
 
 
+- name: Generate a Self Signed openssl_privatekey certificate
+  openssl_privatekey:
+    path: "/etc/ssl/private/{{ item.servername }}.key"
+  with_items: "{{ apache_vhosts_ssl }}"
+  when: apache_vhosts_ssl|length>0
+
+- name: Generate a Self Signed openssl_csr certificate
+  openssl_csr:
+    path: "/etc/ssl/{{ item.servername }}.csr"
+    privatekey_path: "/etc/ssl/private/{{ item.servername }}.key"
+    common_name: "{{ item.servername }}"
+  with_items: "{{ apache_vhosts_ssl }}"
+  when: apache_vhosts_ssl|length>0
+
+- name: Generate a Self Signed openssl_certificate certificate
+  openssl_certificate:
+    path: "/etc/ssl/certs/{{ item.servername }}.crt"
+    privatekey_path: "/etc/ssl/private/{{ item.servername }}.key"
+    csr_path: "/etc/ssl/{{ item.servername }}.csr"
+    provider: selfsigned
+  with_items: "{{ apache_vhosts_ssl }}"
+  when: apache_vhosts_ssl|length>0
+
+
 - name: Add apache vhosts configuration.
   template:
     src: "{{ apache_vhosts_template }}"
