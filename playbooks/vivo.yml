@@ -114,11 +114,12 @@
           - proxy.load
           - proxy_ajp.load
         # apache_haproxy_ip: "200.14.49.24"
-        apache_remove_default_vhost: true
-        apache_create_vhosts: true
+        apache_remove_default_vhost: false
+        apache_create_vhosts: false
         apache_vhosts:
             - servername: "vivo.upr.edu.cu"
               serveralias: "www.vivo.upr.edu.cu"
+              ajp: "localhost:8013"
 
     - role: vivo
       vars:

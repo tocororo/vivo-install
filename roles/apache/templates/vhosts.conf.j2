@@ -29,6 +29,9 @@
 {% if vhost.extra_parameters is defined %}
   {{ vhost.extra_parameters }}
 {% endif %}
+{% if vhost.ajp is defined %}
+    ProxyPass / ajp://{{ vhost.ajp }}/
+{% endif %}
 </VirtualHost>
 
 {% endfor %}
