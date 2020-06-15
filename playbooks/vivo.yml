@@ -105,11 +105,26 @@
             xms: 512M
             xmx: 1024M
             catalina_max_perm_size: 128m
+    - role: apache
+      vars:
+        apache_mods_enabled:
+          - rewrite.load
+          - ssl.load
+          # - remoteip.load
+          - proxy.load
+          - proxy_ajp.load
+        # apache_haproxy_ip: "200.14.49.24"
+        apache_remove_default_vhost: true
+        apache_create_vhosts: true
+        apache_vhosts:
+            - servername: "vivo.upr.edu.cu"
+              serveralias: "www.vivo.upr.edu.cu"
 
     - role: vivo
       vars:
         tomcat_dir: /opt/tomcat-9
         vivo_dir: /opt/vivo
+        alias: "vivo.upr.edu.cu"
         vitro_defaultNamespace: "{{ vitro__defaultNamespace }}"
         vitro_database_url : "{{ vitro__database_url }}"
         vitro_solr_url : "{{ vitro__solr_url }}"

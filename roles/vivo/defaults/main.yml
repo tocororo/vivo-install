@@ -7,8 +7,20 @@ tomcat_dir: /opt/tomcat
 
 tomcat_service_name: tomcat-9
 
+tomcat_ajp_port: 8013
+
+tomcat_ssl_connector_port: 8443
+
+tomcat_connection_timeout: 20000
+
+tomcat_max_threads: 320
+
+tomcat_keep_alive_timeout: 20000
+
 vivo_dir: /opt/vivo
 
+# this is the URL to will have VIVO
+alias: localhost
 
   # This namespace will be used when generating URIs for objects created in the
   # editor. In order to serve linked data, the default namespace must be composed

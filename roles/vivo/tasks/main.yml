@@ -62,6 +62,54 @@
     insertafter: '^#tomcat '
     line: tomcat hard nproc 1500
 
+- name: apt install python-lxml
+  apt:
+      update_cache: yes
+      name: python3-lxml
+
+
+- name: update "Connector" in server.xml of tomcat to adapt it to vivo
+  xml:
+    path: "{{ tomcat_dir }}/conf/server.xml"
+    xpath: /Server/Service/Connector[@protocol="AJP/1.3"]
+    attribute: "{{ item.attr }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { attr: "redirectPort", value: "{{ tomcat_ssl_connector_port }}" }
+    - { attr: "connectionTimeout", value: "{{ tomcat_connection_timeout }}" }
+    - { attr: "maxThreads", value: "{{ tomcat_max_threads }}" }
+    - { attr: "keepAliveTimeout", value: "{{ tomcat_keep_alive_timeout }}" }
+
+
+- name: update "Host" in server.xml of tomcat to adapt it to vivo
+  xml:
+    path: "{{ tomcat_dir }}/conf/server.xml"
+    xpath: /Server/Service/Engine/Host[@name="localhost"]
+    attribute: "{{ item.attr }}"
+    value: "{{ item.value }}"
+  with_items:
+    - { attr: "appBase", value: "webapps" }
+    - { attr: "DeployOnStartup", value: "false" }
+    - { attr: "unpackWARs", value: "true" }
+    - { attr: "autoDeploy", value: "false" }
+    - { attr: "xmlValidation", value: "false" }
+    - { attr: "xmlNamespaceAware", value: "false" }
+
+
+- name: set_children "Host" in server.xml of tomcat to adapt it to vivo
+  xml:
+    path: "{{ tomcat_dir }}/conf/server.xml"
+    xpath: /Server/Service/Engine/Host[@name="localhost"][@xmlNamespaceAware="false"]
+    input_type: xml
+    set_children:
+      - <Alias>{{ alias }}</Alias>
+      - <Context path=""
+            docBase="{{ tomcat_dir }}/webapps/{{ app_name }}" reloadable="true" cookies="true" >
+                <Environment type="java.lang.String" name="vitro/home" value="{{ vivo_dir }}/home" override="true"/>
+                <Manager pathname="" /> 
+          </Context>
+
+
 - name: restart tomcat instance
   service:
     name: "{{ tomcat_service_name }}"
