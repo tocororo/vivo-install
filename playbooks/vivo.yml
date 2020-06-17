@@ -114,7 +114,7 @@
           - proxy.load
           - proxy_ajp.load
         # apache_haproxy_ip: "200.14.49.24"
-        apache_remove_default_vhost: false
+        apache_remove_default_vhost: true
         apache_create_vhosts: true
         apache_vhosts_ssl:
             - servername: "vivo.upr.edu.cu"

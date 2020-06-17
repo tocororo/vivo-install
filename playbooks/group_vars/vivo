@@ -24,24 +24,24 @@ proxy__pass: localhost,127.0.0.1
 # Configuración especifica de VIVO
 # ---------------------------------------------------------
 
-vitro__defaultNamespace: http://10.138.10.13:8080/vivo/individual/
+vitro__defaultNamespace: https://vivo.upr.edu.cu/individual/
 ### la estructura de la URL es:
-###     http://<<IP | DNS>>:puerto/vivo/individual/
-### siempre debe terminar en "/vivo/individual/"
+###     http://<<IP | DNS>>:puerto/individual/
+### siempre debe terminar en "/individual/"
 
 
-selfEditing__idMatchingProperty: http://10.138.10.13:8080/vivo/ns#networkId
+selfEditing__idMatchingProperty: https://vivo.upr.edu.cu/ns#networkId
 ### la estructura de la URL es:
-###     http://<<IP | DNS>>:puerto/vivo/ns#networkId
-### siempre debe terminar en "/vivo/ns#networkId"
+###     http://<<IP | DNS>>:puerto/ns#networkId
+### siempre debe terminar en "/ns#networkId"
 
 
-vitro__database_url: jdbc:mysql://10.138.10.13/vitrodb
+vitro__database_url: jdbc:mysql://10.138.10.177/vitrodb
 ### la estructura de la URL es:
 ###     jdbc:mysql://<<IP | DNS>>/<<nombre de la BD>>
 
 
-vitro__solr_url: http://10.138.10.13:8983/solr/vivocore
+vitro__solr_url: http://10.138.10.177:8983/solr/vivocore
 ### la estructura de la URL es:
 ###     http://<<IP | DNS>>:puerto/solr/vivocore
 ### donde "vivocore" es el indice que utiliza VIVO para las búsquedas
